@@ -77,9 +77,16 @@
 	right  		 : 0;
 	width  		 : 300px;
 	height 		 : 15px;
-	background : red;
+	cursor       : pointer;
+	background   : red;
+	border-radius: 5px 0 0 0;
 	z-index 	 : 1;
 }
+
+.gbmspa-shell-chat:hover {
+	background : #a00;
+}
+
 .gbmspa-shell-modal {
 	margin-top 	  : -200px;
 	margin-left   : -200px;
