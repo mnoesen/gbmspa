@@ -29,10 +29,12 @@ gbmspa.shell = (function () {
 				+ '<div class="gbmspa-shell-chat"></div>'
 				+ '<div class="gbmspa-shell-modal"></div>',
 
-				chat_extend_time    : 1000, 
-				chat_retract_time   : 300,
-				chat_extend_height  : 450,
-				chat_retract_height : 15
+				chat_extend_time     : 1000, 
+				chat_retract_time    : 300,
+				chat_extend_height   : 450,
+				chat_retract_height  : 15
+        chat_extended_title  : 'Click to retract',
+        chat_retracted_title : 'Click to extend'
 		},
 		stateMap  = { 
       $container : null,
@@ -79,9 +81,9 @@ gbmspa.shell = (function () {
   		is_open    = px_chat_ht === configMap.chat_extend_height,
   		is_closed  = px_chat_ht === configMap.chat_retract_height,
   		is_sliding = ! is_open && ! is_closed;
-  	// avoid race condition 
+  	// Avoid race condition 
   	if ( is_sliding ) { return false };
-    // begin extend chat slider 
+    // Begin extend chat slider 
     if ( do_extend ) {
     	jqueryMap.$chat.animate (
     		{ height : configMap.chat_extend_height },
@@ -96,9 +98,9 @@ gbmspa.shell = (function () {
     	); 
     	return true; 
     }
-    	// End extend chat slider 
-
-    	// Begin retract chat slider 
+    // End extend chat slider 
+    //
+    // Begin retract chat slider 
     	jqueryMap.$chat.animate(
     		{ height : configMap.chat_retract_height },
     		configMap.chat_retract_time,
