@@ -46,7 +46,7 @@ gbmspa.shell = (function () {
     },
 		jqueryMap = {},
 
-		copyAnchorMap, setJqueryMap, toggleChat, 
+		copyAnchorMap,    setJqueryMap, toggleChat, 
     changeAnchorPart, onHashChange,
     onClickChat,      initModule; 
 	//------------- END MODULE SCOPE VARIABLES --------------------
@@ -123,8 +123,8 @@ gbmspa.shell = (function () {
     	);
     	return true;
     	// End retract chat slider  
-    };
-    // End DOM method toggleChat
+  };
+  // End DOM method toggleChat
   // Begin DOM method /changeAnchorPart/
   // Puropose : Changes parts of the URI anchor component
   // Arguments : 
@@ -247,34 +247,47 @@ gbmspa.shell = (function () {
   // End Event handler /onHashchange/
   //
   // Begin Event handler /onClickChat/
-
    onClickChat = function ( event ) {
-     if ( toggleChat( stateMap.is_chat_retracted ) ) {
-        $.uriAnchor.setAnchor({
-          chat : ( stateMap.is_chat_retracted ? 'open' : 'closed')
-        });
-     }
+      changeAnchorPart({
+        chat : ( stateMap.is_chat_retracted ? 'open' : 'closed' )
+      });
      return false; 
    };
   // End Event handler /onClickChat/
   //------------------ END EVENT HANDLERS -----------------------
 
-  //----------------- BEGIN PUBLIC METHODS ----------------------
-  // Begin PUBLIC method /initModule/
+  //------------------- BEGIN PUBLIC METHODS -------------------
+  // Begin Public method /initModule/
   initModule = function ( $container ) {
-  	// load HTML and map jQuery collections 
-  	stateMap.$container = $container; 
-  	$container.html( configMap.main_html ); 
-  	setJqueryMap();
+    // load HTML and map jQuery collections
+    stateMap.$container = $container;
+    $container.html( configMap.main_html );
+    setJqueryMap();
 
-  	// initialize chat slider and bind click event handler 
-    stateMap.is_chat_retracted = true; 
-    jqueryMap.$chat 
+    // initialize chat slider and bind click handler
+    stateMap.is_chat_retracted = true;
+    jqueryMap.$chat
       .attr( 'title', configMap.chat_retracted_title )
       .click( onClickChat );
+
+    // configure uriAnchor to use our schema
+    $.uriAnchor.configModule({
+      schema_map : configMap.anchor_schema_map
+    });
+
+    // Handle URI anchor change events.
+    // This is done /after/ all feature modules are configured
+    // and initialized, otherwise they will not be ready to handle
+    // the trigger event, which is used to ensure the anchor
+    // is considered on-load
+    //
+    $(window)
+      .bind( 'hashchange', onHashchange )
+      .trigger( 'hashchange' );
+
   };
-  // End PUBLIC method /initModule/ 
-  
+  // End PUBLIC method /initModule/
+
   return { initModule : initModule };
-  //------------------ END PUBLIC METHODS -----------------------
+  //------------------- END PUBLIC METHODS ---------------------
 }());
