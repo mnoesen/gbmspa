@@ -1,10 +1,18 @@
 <!DOCTYPE html>
+<!--
+    gbmspa.html
+    gbmspa browser document
+-->
 <html>
 <head>
+    <!-- ie9+ rendering support for latest standards -->
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<title>GBM Website</title>
 
 	<!-- stylesheets -->
 	<link rel="stylesheet" href="css/gbmspa.css" type="text/css"/>
+    <link rel="stylesheet" href="css/gbmspa.chat.css" type="text/css"/>
 	<link rel="stylesheet" href="css/gbmspa.shell.css" type="text/css"/>
 
     <!-- 3rd Party Javascript -->
@@ -14,7 +22,10 @@
 
     <!--Original Javascript -->
     <script src="js/gbmspa.js"      ></script>
-    <script src="js/gbmspa.shell.js"></script>
+    <script src="js/gbmspa.util.js" ></script>
+    <script src="js/gbmspa.model.js" ></script>
+    <script src="js/gbmspa.shell.js" ></script>
+    <script src="js/gbmspa.chat.js" ></script>
     <script>
     	$(function () { gbmspa.initModule( $('#gbmspa')  );  });
     </script>
