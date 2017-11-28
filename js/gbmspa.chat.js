@@ -78,10 +78,18 @@ configModule = function ( input_map ) {
 // End public method /configModule/
 
 // Begin public method /initModule/
-// Purpose    : Initializes module 
+// Example    : gbmspa.chat.initModule( $('div_id') );
+// Purpose    : Directs Chat to offer its capability to the user 
 // Arguments  : 
-//  * $container the jquery element used by this feature 
-// Returns    : true
+//  * $append_target (example: $('#div_id')).
+//     A jQuery collection that should represent a single 
+//     DOM container
+// Action     : 
+//   Appends the chat slider to the provided container and 
+//   fills it with HTML content. It then initializes elements, 
+//   events, and handlers to provide the user with a chat
+//   room interface
+// Returns    : true on success, false on failure 
 // Throws     : none 
 //
 initModule = function ( $container ) {
@@ -91,7 +99,23 @@ initModule = function ( $container ) {
 	return true; 
 };
 // End public method /initModule/
-
+//
+// Begin public method /setSliderPosition/
+//
+// Example   : gbmspa.chat.setSliderPosition( 'closed' );
+// Purpose   : Ensure chat slider is in the requested area 
+// Arguments : 
+//   * position_type - enum('closed', 'opened' or 'hidden')
+//   * callback - optional callback at end of animation
+//     (callback receives slider DOM element as argument)
+// Action    :
+//   Leaves slider in current state if it matches requested,
+//   otherwise animate to requested state.  
+// Returns   : 
+//   * true  - requested state achieved 
+//   * false - requested state not achieved 
+// Throws    : none
+//
 // return public methods 
 return {
 	configModule : configModule,
