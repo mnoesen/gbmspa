@@ -17,7 +17,7 @@ var
 	configMap = {
 		main_html : String()
 			+ '<div style="padding:1em; color:#fff;">'
-			+ 'Submit a request for Maintainence'
+			+ 'Submit a request to building maintenance'
 			+ '</div>',
 			settable_map : {},
 	},
@@ -47,13 +47,25 @@ setJqueryMap = function () {
 
 //--------- BEGIN PUBLIC METHODS --------------
 // Begin public method /configModule/
-// Purpose   : Adjust configuration of allowed keys 
+// Example   : gbmspa.chat.configModule({ slider_open_em : 18 });
+// Purpose   : Configure the module prior to initialization
 // Arguments : A map of settable keys and values 
-//    * color_name - color to use 
-// Settings  : 
-// * configMap.settable_map declares allowed keys 
+//    * set_char_anchor - a callback to modify the URI anchor to 
+//       indicate open or closed state. This callback must return
+//       false if the requested state cannot be met. 
+//    * chat_model - the chat model object provides methods to 
+//        interact with our instant messaging 
+//    * people_model - the people model object which provides 
+//        methods to manage the list of people the model maintains.
+//    * slider_* settings.  All these are optional scalars.
+//        See mapConfig.settable_map for a full list
+//        Example: slider_open_em is the open height in em's. 
+// Action    :
+//   The internal configuration data structure (configMap) is 
+//   updated with provided arguments.  No other actions are taken. 
 // Returns   : true 
-// Throws    : none 
+// Throws    : Javascript error object and stack trace on 
+//               unacceptable or missing arguments.  
 //
 configModule = function ( input_map ) {
 	gbmspa.util.setConfigMap({
