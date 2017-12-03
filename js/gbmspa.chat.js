@@ -16,25 +16,22 @@ gbmspa.chat = (function () {
 var 
 	configMap = {
 		main_html : String()
-			/*+ '<div style="padding:1em; color:#fff;">'
-			+ 'Submit a request to building maintenance'
-			+ '</div>', */
-			+ '<div class="gbmspa-chat">'
-			   + '<div class="gbmspa-chat-head">'
-			   + '<div class="gbmspa-chat-head-toggle">+</div>'
-			   + '<div class="gbmspa-chat-head-title">'
+		  + '<div class="gbmspa-chat">'
+			+ '<div class="gbmspa-chat-head">'
+			  + '<div class="gbmspa-chat-head-toggle">+</div>'
+			  + '<div class="gbmspa-chat-head-title">'
 			     + 'Chat'
-			   + '<div>'  
-			  + '<div>'
-			  + '<div class="gbmspa-chat-closer">x</div>'
-			  + '<div class="gbmspa-chat-sizer">'
+			  + '</div>'  
+			+ '</div>'
+			+ '<div class="gbmspa-chat-closer">x</div>'
+			+ '<div class="gbmspa-chat-sizer">'
 			    + '<div class="gbmspa-chat-msgs"></div>' 
 			    + '<div class="gbmspa-chat-box">'
 			      + '<input type="text"/>'
 			      + '<div>send</div>'
 			    + '</div>' 
 			  + '</div>'
-	    + '</div>',
+	      + '</div>',
 			settable_map : {
 				slider_open_time    : true, 
 				slider_close_time   : true, 

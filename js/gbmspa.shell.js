@@ -16,7 +16,7 @@ gbmspa.shell = (function () {
 	var
 		configMap = {
       anchor_schema_map : {
-        chat : { open : true, closed : true }
+        chat : { opened: true, closed : true }
       },
 			main_html : String()
 				+	'<div class="gbmspa-shell-head">'
@@ -29,26 +29,14 @@ gbmspa.shell = (function () {
 					+ '<div class="gbmspa-shell-main-content"></div>'
 				+ '</div>'
 				+ '<div class="gbmspa-shell-foot"></div>'
-				+ '<div class="gbmspa-shell-chat"></div>'
 				+ '<div class="gbmspa-shell-modal"></div>',
-
-				chat_extend_time     : 1000, 
-				chat_retract_time    : 300,
-				chat_extend_height   : 450,
-				chat_retract_height  : 15,
-        chat_extended_title  : 'Click to retract',
-        chat_retracted_title : 'Click to extend'
 		},
-		stateMap  = { 
-      $container : null,
-      anchor_map : {},
-      is_chat_retracted : true
-    },
+		stateMap  = { anchor_map : {} },
 		jqueryMap = {},
 
-		copyAnchorMap,    setJqueryMap, toggleChat, 
+		copyAnchorMap,    setJqueryMap, 
     changeAnchorPart, onHashChange,
-    onClickChat,      initModule; 
+    setChatAnchor,    initModule; 
 	//------------- END MODULE SCOPE VARIABLES --------------------
 
 	//---------------- BEGIN UTILITY METHODS ----------------------
@@ -59,84 +47,14 @@ gbmspa.shell = (function () {
 	//----------------- END UTILITY METHODS -----------------------
 
   //------------------ BEGIN DOM METHODS ------------------------
-  // Begin callback method /setChatAnchor/
-  // Example   : setChatAnchor( 'closed ' );
-  // Purpose   : Change the chat component of the anchor
-  // Arguments : 
-  //    * position_type - may be 'closed' or 'opened'
-  // Action    :
-  //    Changes the URI anchor parameter 'chat' to the 
-  //    requested value if possible. 
-  // Returns   :
-  //    * true  - requested anchor part was updated 
-  //    * false - requested anchor part was not updated 
-  // Throws    : none
   // 
   // Begin DOM method /setJqueryMap/
   setJqueryMap = function () {
   	var $container = stateMap.$container; 
-  	
-	  jqueryMap = { 
-		$container : $container,
-		$chat : $container.find( '.gbmspa-shell-chat' ) 
-	  };
+	  jqueryMap = { $container : $container };
   };
   // End DOM method /setJqueryMap/
   
-  // Begin DOM method /toggleChat/
-  // Purpose: Extends or retracts slider
-  // Arguments: 
-  //   * do_extend - if true, extends slider; if false, rectracts it
-  //   * callback  - optional function to execute @ end of animation 
-  // Settings: 
-  //   * chat_extend_time, chat_retract_time
-  //   * chat_extend_height, chat_retract_height
-  // Returns: boolean 
-  //   * true - slider animation activated 
-  //   * false - slider animation not activated 
-  // State: sets stateMap.is_chat_retracted
-  //   * true - slider is retracted
-  //   * false - slider is extended
-  toggleChat = function ( do_extend, callback ) {
-  	var 
-  		px_chat_ht = jqueryMap.$chat.height(),
-  		is_open    = px_chat_ht === configMap.chat_extend_height,
-  		is_closed  = px_chat_ht === configMap.chat_retract_height,
-  		is_sliding = ! is_open && ! is_closed;
-  	// Avoid race condition 
-  	if ( is_sliding ) { return false };
-    // Begin extend chat slider 
-    if ( do_extend ) {
-    	jqueryMap.$chat.animate (
-    		{ height : configMap.chat_extend_height },
-    		configMap.chat_extend_time,
-    		function () {
-          jqueryMap.$chat.attr(
-            'title', configMap.chat_extended_title
-            );
-            stateMap.is_chat_retracted = false;
-    			if ( callback ){ callback( jqueryMap.$chat ); }
-    		}
-    	); 
-    	return true; 
-    }
-    // End extend chat slider 
-    // Begin retract chat slider 
-    	jqueryMap.$chat.animate(
-    		{ height : configMap.chat_retract_height },
-    		configMap.chat_retract_time,
-    		function () {
-          jqueryMap.$chat.attr(
-            'title', configMap.chat_retracted_title
-          );
-          stateMap.is_chat_retracted = true; 
-    			if ( callback ){ callback( jqueryMap.$chat ); }
-    		}	
-    	);
-    	return true;
-    	// End retract chat slider  
-  };
-  // End DOM method toggleChat
   // Begin DOM method /changeAnchorPart/
   // Puropose : Changes parts of the URI anchor component
   // Arguments : 
@@ -213,16 +131,17 @@ gbmspa.shell = (function () {
   //   * Parses the URI anchor component
   //   * Compares proposed application state with current
   //   * Adjust the application only where proposed state
-  //     differs from existing
+  //     differs from existing and is allowed by anchor schema 
   //
   onHashchange = function ( event ) {
     var
-      anchor_map_previous = copyAnchorMap(),
-      anchor_map_proposed,
+      
       _s_chat_previous, _s_chat_proposed,
-      s_chat_proposed;
+      s_chat_proposed, anchor_map_proposed,
+      is_ok = true,
+      anchor_map_previous = copyAnchorMap();
 
-    // attempt to parse anchor
+    // attempt to parse anchor 
     try { anchor_map_proposed = $.uriAnchor.makeAnchorMap(); }
     catch ( error ) {
       $.uriAnchor.setAnchor( anchor_map_previous, null, true );
@@ -240,24 +159,35 @@ gbmspa.shell = (function () {
     ) {
       s_chat_proposed = anchor_map_proposed.chat;
       switch ( s_chat_proposed ) {
-        case 'open'   :
-          toggleChat( true );
+        case 'opened'   :
+          is_ok = gbmspa.chat.setSliderPosition( 'opened' );
         break;
         case 'closed' :
-          toggleChat( false );
+          is_ok = gbmspa.chat.setSliderPosition( 'closed' );
         break;
         default  :
-          toggleChat( false );
+          gbmspa.chat.setSliderPosition( 'closed' );
           delete anchor_map_proposed.chat;
           $.uriAnchor.setAnchor( anchor_map_proposed, null, true );
       }
     }
-    // End adjust chat component if changed
+    // End adjust chat component if changed 
+    // Begin revert anchor if slider change denied 
+    if ( ! is_ok ){
+      if ( anchor_map_previous ){
+        $.uriAnchor.setAnchor( anchor_map_previous, null, true );
+      } else {
+        delete anchor_map_proposed.chat; 
+        $.uriAnchor.setAnchor( anchor_map_proposed, null, true);
+      }
+    }
+    // End revert anchor if slider change denied
 
     return false;
   };
   // End Event handler /onHashchange/
   //
+  /* FIGURE OUT IF THIS EVENT HANDLER NEEDS TO BE DELETED!******************
   // Begin Event handler /onClickChat/
    onClickChat = function ( event ) {
       changeAnchorPart({
@@ -266,9 +196,26 @@ gbmspa.shell = (function () {
      return false; 
    };
   // End Event handler /onClickChat/
+  */
   //------------------ END EVENT HANDLERS -----------------------
-
-  //------------------- BEGIN PUBLIC METHODS -------------------
+  //----------------------BEGIN CALLBACKS------------------------
+  // Begin callback method /setChatAnchor/
+  // Example: setChatAnchor( 'closed' );
+  // Purpose: Change the chat component of the anchor 
+  // Arguments: 
+  //   * position_type - may be 'closed' or 'opened'
+  // Action:
+  //   Changes the URI anchor param 'chat' to the requested 
+  //   value if possible. 
+  // Returns: 
+  //   * true - requested anchor part was updated 
+  //   * false - requested anchor part was not updated 
+  // Throws: none 
+  setChatAnchor function ( position_type ){
+    return changeAnchorPart({ chat : position_type });
+  };
+  //-----------------------END CALLBACKS-------------------------
+  //------------------- BEGIN PUBLIC METHODS --------------------
   // Begin Public method /initModule/
   initModule = function ( $container ) {
     // load HTML and map jQuery collections
