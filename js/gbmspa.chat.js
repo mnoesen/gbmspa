@@ -246,34 +246,27 @@ configModule = function ( input_map ) {
 // Returns    : true on success, false on failure 
 // Throws     : none 
 //
-initModule = function ( $container ) {
-	$container.html( configMap.main_html );
-	stateMap.$container = $container ; 
+initModule = function ( $append_target ) {
+	$append_target.append( configMap.main_html );
+	stateMap.$append_target = $append_target; 
 	setJqueryMap();
+	setPxSizes(); 
+
+	// initialize chat slider to default title and state 
+	jqueryMap.$toggle.prop( 'title', configMap.slider_closed_title );
+	jqueryMap.$head.click( onClickToggle );
+	stateMap.position_type = 'closed';
+
 	return true; 
 };
 // End public method /initModule/
 //
-// Begin public method /setSliderPosition/
-//
-// Example   : gbmspa.chat.setSliderPosition( 'closed' );
-// Purpose   : Ensure chat slider is in the requested area 
-// Arguments : 
-//   * position_type - enum('closed', 'opened' or 'hidden')
-//   * callback - optional callback at end of animation
-//     (callback receives slider DOM element as argument)
-// Action    :
-//   Leaves slider in current state if it matches requested,
-//   otherwise animate to requested state.  
-// Returns   : 
-//   * true  - requested state achieved 
-//   * false - requested state not achieved 
-// Throws    : none
-//
+
 // return public methods 
 return {
-	configModule : configModule,
-	initModule   : initModule
+	setSliderPosition : setSliderPosition,
+	configModule      : configModule,
+	initModule        : initModule
 };
 //---------- END PUBLIC METHODS ---------------
 }());
