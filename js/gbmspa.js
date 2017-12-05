@@ -1,6 +1,6 @@
-/*
+/*gbmgbmspa
  * gbmspa.js
- * Root namespace module
+ * Root namegbmspace module
 */
 
 /*jslint           browser : true,   continue : true,
@@ -9,7 +9,7 @@
   regexp : true,    sloppy : true,       vars : false,
   white  : true
 */
-/*global $, spa */
+/*global $, gbmspa */
 
 var gbmspa = (function () {
   var initModule = function ( $container ) {

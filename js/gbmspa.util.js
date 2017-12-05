@@ -1,4 +1,4 @@
-/*
+/*gbmgbmspa
  * gbmspa.util.js
  * General JavaScript utilities
  *
@@ -10,13 +10,13 @@
  *
 */
 
-/*jslint          browser : true, continue : true,
-  devel  : true,  indent  : 2,    maxerr   : 50,
-  newcap : true,  nomen   : true, plusplus : true,
-  regexp : true,  sloppy  : true, vars     : false,
+/*jslint          browser : true,  continue : true,
+  devel  : true,  indent  : 2,     maxerr   : 50,
+  newcap : true,  nomen   : true,  plusplus : true,
+  regexp : true,  sloppy  : true,  vars     : false,
   white  : true
- */
-/*global $, spa */
+*/
+/*global $, gbmspa */
 
 gbmspa.util = (function () {
   var makeError, setConfigMap;
@@ -27,8 +27,8 @@ gbmspa.util = (function () {
   //   * name_text - the error name
   //   * msg_text  - long error message
   //   * data      - optional data attached to error object
-  // Returns : newly constructed error object
-  // Throws  : none
+  // Returns  : newly constructed error object
+  // Throws   : none
   //
   makeError = function ( name_text, msg_text, data ) {
     var error     = new Error();
