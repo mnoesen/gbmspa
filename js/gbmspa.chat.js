@@ -297,7 +297,9 @@ gbmspa.chat = (function () {
   return {
     setSliderPosition : setSliderPosition,
     configModule      : configModule,
-    initModule        : initModule
+    initModule        : initModule,
+    removeSlider      : removeSlider,
+    handleResize      : handleResize
   };
   //------------------- END PUBLIC METHODS ---------------------
 }());
