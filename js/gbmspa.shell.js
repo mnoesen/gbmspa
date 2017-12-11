@@ -18,7 +18,7 @@ gbmspa.shell = (function () {
       anchor_schema_map : {
         chat  : { opened : true, closed : true }
       },
-      resize_interval = 200,
+      resize_interval : 200,
       main_html : String()
         + '<div class="gbmspa-shell-head">'
           + '<div class="gbmspa-shell-head-logo"></div>'

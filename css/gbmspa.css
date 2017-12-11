@@ -42,9 +42,6 @@
     min-height : 15em;
     min-width  : 35em;
     overflow   : hidden;
-
-    background-color : #fff;
-    border-radius    : 0 8px 0 8px;
   }
 /** End gbmspa namespace selectors */
 
