@@ -1,6 +1,6 @@
 /*gbmgbmspa
  * gbmspa.chat.js
- * Chat feature module for gbmspa
+ * Chat module for GBM SPA, but likely to be used for submitting tickets to main office and maint.
 */
 
 /*jslint         browser : true, continue : true,

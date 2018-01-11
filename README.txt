@@ -1,5 +1,5 @@
 /* This is the file structure for the GBM single page application, 
-  also known as 'gbmspa,' as of 12/20/2017 2:54PM */
+  also known as 'gbmspa,' as of Jan 11 2018 */
 
 
 +--gbmspa
